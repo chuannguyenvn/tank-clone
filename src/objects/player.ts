@@ -21,8 +21,10 @@ export class Player extends Phaser.GameObjects.Image
 
     // input
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys
-    private rotateKeyLeft: Phaser.Input.Keyboard.Key
-    private rotateKeyRight: Phaser.Input.Keyboard.Key
+    private aKey: Phaser.Input.Keyboard.Key
+    private dKey: Phaser.Input.Keyboard.Key
+    private wKey: Phaser.Input.Keyboard.Key
+    private sKey: Phaser.Input.Keyboard.Key
     private shootingKey: Phaser.Input.Keyboard.Key
 
     constructor(aParams: IImageConstructor) {
@@ -97,50 +99,48 @@ export class Player extends Phaser.GameObjects.Image
 
         // input
         this.cursors = this.scene.input.keyboard?.createCursorKeys() as Phaser.Types.Input.Keyboard.CursorKeys
-        this.rotateKeyLeft = this.scene.input.keyboard?.addKey(
+        this.aKey = this.scene.input.keyboard?.addKey(
             Phaser.Input.Keyboard.KeyCodes.A,
         ) as Key
-        this.rotateKeyRight = this.scene.input.keyboard?.addKey(
+        this.dKey = this.scene.input.keyboard?.addKey(
             Phaser.Input.Keyboard.KeyCodes.D,
         ) as Key
-        this.shootingKey = this.scene.input.keyboard?.addKey(
-            Phaser.Input.Keyboard.KeyCodes.SPACE,
+        this.wKey = this.scene.input.keyboard?.addKey(
+            Phaser.Input.Keyboard.KeyCodes.W,
         ) as Key
-
+        this.sKey = this.scene.input.keyboard?.addKey(
+            Phaser.Input.Keyboard.KeyCodes.S,
+        ) as Key
         // physics
         this.scene.physics.world.enable(this)
     }
 
     private handleInput() {
-        // rotate barrel
-        if (this.rotateKeyLeft.isDown)
-        {
-            this.barrel.rotation -= 0.05
-        }
-        else if (this.rotateKeyRight.isDown)
-        {
-            this.barrel.rotation += 0.05
-        }
+        this.barrel.rotation =
+            (this.scene.input.activePointer.positionToCamera(this.scene.cameras.main) as Vector2)
+                .subtract(new Vector2(this.x, this.y))
+                .angle()
+            + Phaser.Math.PI2 / 4
 
 
         const targetDirection = Vector2.ZERO.clone()
         let arrowKeyPressed = false
-        if (this.cursors.down.isDown)
+        if (this.cursors.down.isDown || this.sKey.isDown)
         {
             targetDirection.add(new Vector2(0, 1))
             arrowKeyPressed = true
         }
-        if (this.cursors.up.isDown)
+        if (this.cursors.up.isDown || this.wKey.isDown)
         {
             targetDirection.add(new Vector2(0, -1))
             arrowKeyPressed = true
         }
-        if (this.cursors.left.isDown)
+        if (this.cursors.left.isDown || this.aKey.isDown)
         {
             targetDirection.add(new Vector2(-1, 0))
             arrowKeyPressed = true
         }
-        if (this.cursors.right.isDown)
+        if (this.cursors.right.isDown || this.dKey.isDown)
         {
             targetDirection.add(new Vector2(1, 0))
             arrowKeyPressed = true
@@ -167,7 +167,7 @@ export class Player extends Phaser.GameObjects.Image
     }
 
     private handleShooting(): void {
-        if (this.shootingKey.isDown && this.scene.time.now > this.lastShoot)
+        if (this.scene.input.activePointer.leftButtonDown() && this.scene.time.now > this.lastShoot)
         {
             this.scene.cameras.main.shake(20, 0.005)
             this.scene.tweens.add({
