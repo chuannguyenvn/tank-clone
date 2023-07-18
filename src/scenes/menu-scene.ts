@@ -1,3 +1,5 @@
+import Key = Phaser.Input.Keyboard.Key
+
 export class MenuScene extends Phaser.Scene
 {
     private startKey: Phaser.Input.Keyboard.Key
@@ -10,9 +12,9 @@ export class MenuScene extends Phaser.Scene
     }
 
     init(): void {
-        this.startKey = this.input.keyboard.addKey(
+        this.startKey = this.input.keyboard?.addKey(
             Phaser.Input.Keyboard.KeyCodes.S,
-        )
+        ) as Key
         this.startKey.isDown = false
     }
 

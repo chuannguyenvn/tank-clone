@@ -2,6 +2,8 @@ import { Player } from '../objects/player'
 import { Enemy } from '../objects/enemy'
 import { Obstacle } from '../objects/obstacles/obstacle'
 import { Bullet } from '../objects/bullet'
+import Tileset = Phaser.Tilemaps.Tileset
+import TilemapLayer = Phaser.Tilemaps.TilemapLayer
 
 export class GameScene extends Phaser.Scene
 {
@@ -21,15 +23,12 @@ export class GameScene extends Phaser.Scene
         })
     }
 
-    init(): void {
-    }
-
     create(): void {
         // create tilemap from tiled JSON
         this.map = this.make.tilemap({ key: 'levelMap' })
 
-        this.tileset = this.map.addTilesetImage('tiles')
-        this.layer = this.map.createLayer('tileLayer', this.tileset, 0, 0)
+        this.tileset = this.map.addTilesetImage('tiles') as Tileset
+        this.layer = this.map.createLayer('tileLayer', this.tileset, 0, 0) as TilemapLayer
         this.layer.setCollisionByProperty({ collide: true })
 
         this.obstacles = this.add.group({
@@ -50,46 +49,48 @@ export class GameScene extends Phaser.Scene
         this.physics.add.collider(
             this.player.getBullets(),
             this.layer,
-            this.bulletHitLayer,
-            null,
+            this.bulletHitLayer as any,
+            null as any,
             this,
         )
 
         this.physics.add.collider(
             this.player.getBullets(),
             this.obstacles,
-            this.bulletHitObstacles,
-            null,
+            this.bulletHitObstacles as any,
+            null as any,
             this,
         )
 
-        this.enemies.children.each((enemy: Enemy) => {
+        this.enemies.children.each((enemy) => {
             this.physics.add.overlap(
                 this.player.getBullets(),
                 enemy,
-                this.playerBulletHitEnemy,
-                null,
+                this.playerBulletHitEnemy as any,
+                null as any,
                 this,
             )
             this.physics.add.overlap(
-                enemy.getBullets(),
+                (enemy as Enemy).getBullets(),
                 this.player,
-                this.enemyBulletHitPlayer,
-                null,
+                this.enemyBulletHitPlayer as any,
+                null as any,
             )
 
             this.physics.add.collider(
-                enemy.getBullets(),
+                (enemy as Enemy).getBullets(),
                 this.obstacles,
-                this.bulletHitObstacles,
-                null,
+                this.bulletHitObstacles as any,
+                null as any,
             )
             this.physics.add.collider(
-                enemy.getBullets(),
+                (enemy as Enemy).getBullets(),
                 this.layer,
-                this.bulletHitLayer,
-                null,
+                this.bulletHitLayer as any,
+                null as any,
             )
+
+            return null
         }, this)
 
         this.cameras.main.startFollow(this.player)
@@ -98,26 +99,27 @@ export class GameScene extends Phaser.Scene
     update(): void {
         this.player.update()
 
-        this.enemies.children.each((enemy: Enemy) => {
+        this.enemies.children.each((enemy, index) => {
             enemy.update()
             if (this.player.active && enemy.active)
             {
-                var angle = Phaser.Math.Angle.Between(
-                    enemy.body.x,
-                    enemy.body.y,
+                const angle = Phaser.Math.Angle.Between(
+                    (enemy as Enemy).body.x,
+                    (enemy as Enemy).body.y,
                     this.player.body.x,
                     this.player.body.y,
-                )
+                );
 
-                enemy.getBarrel().angle =
+                (enemy as Enemy).getBarrel().angle =
                     (angle + Math.PI / 2) * Phaser.Math.RAD_TO_DEG
             }
+            return null
         }, this)
     }
 
     private convertObjects(): void {
         // find the object layer in the tilemap named 'objects'
-        const objects = this.map.getObjectLayer('objects').objects as any[]
+        const objects = this.map.getObjectLayer('objects')?.objects as any[]
 
         objects.forEach((object) => {
             if (object.type === 'player')
@@ -131,7 +133,7 @@ export class GameScene extends Phaser.Scene
             }
             else if (object.type === 'enemy')
             {
-                let enemy = new Enemy({
+                const enemy = new Enemy({
                     scene: this,
                     x: object.x,
                     y: object.y,
@@ -142,7 +144,7 @@ export class GameScene extends Phaser.Scene
             }
             else
             {
-                let obstacle = new Obstacle({
+                const obstacle = new Obstacle({
                     scene: this,
                     x: object.x,
                     y: object.y - 40,

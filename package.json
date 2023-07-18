@@ -1,33 +1,58 @@
 {
-  "name": "tank",
-  "version": "2.0.0",
-  "description": "Tank for Phaser 3 in TypeScript",
-  "keywords": [],
+  "name": "type-project-template",
+  "version": "1.0.0",
+  "description": "Typescript template project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack serve --config webpack/webpack.dev.js",
+    "build": "rimraf dist && webpack --config webpack/webpack.prod.js",
+    "bundle": "npm run build",
+    "preview": "serve dist",
+    "util:check": "prettier --check src/scripts/**",
+    "util:format": "prettier --write src/scripts/**"
+  },
+  "alias": {
+    "@/": "./src"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./configs/.eslintrc"
+    ]
+  },
+  "prettier": {
+    "tabWidth": 4,
+    "printWidth": 100,
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "always",
+    "endOfLine": "lf"
+  },
   "devDependencies": {
-    "expose-loader": "4.0.0",
-    "ts-loader": "9.3.1",
-    "typescript": "4.8.0-dev.20220730",
-    "webpack": "5.74.0",
-    "webpack-cli": "4.10.0",
-    "webpack-dev-server": "4.9.3"
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "copy-webpack-plugin": "^10.1.0",
+    "eslint": "^8.42.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "javascript-obfuscator": "^4.0.0",
+    "prettier": "^2.5.1",
+    "prettier-eslint": "^15.0.1",
+    "rimraf": "^3.0.2",
+    "serve": "^13.0.2",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.3",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.6.0",
+    "webpack-merge": "^5.8.0",
+    "webpack-obfuscator": "^3.5.0",
+    "workbox-webpack-plugin": "^6.4.2"
   },
   "dependencies": {
-    "phaser": "3.60.0-beta.9"
-  },
-  "scripts": {
-    "dev": "webpack --mode development && webpack serve --mode development"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/digitsensitive/phaser3-typescript.git"
-  },
-  "author": {
-    "name": "digitsensitive",
-    "email": "digit.sensitivee@gmail.com"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/digitsensitive/phaser3-typescript/issues"
-  },
-  "homepage": "https://github.com/digitsensitive/phaser3-typescript#readme"
+    "phaser": "^3.60.0",
+    "phaser-raycaster": "^0.10.6"
+  }
 }

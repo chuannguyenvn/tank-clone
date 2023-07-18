@@ -1,5 +1,7 @@
 import { Bullet } from './bullet'
 import { IImageConstructor } from '../interfaces/image.interface'
+import Key = Phaser.Input.Keyboard.Key
+import Vector2 = Phaser.Math.Vector2
 
 export class Player extends Phaser.GameObjects.Image
 {
@@ -94,55 +96,22 @@ export class Player extends Phaser.GameObjects.Image
         })
 
         // input
-        this.cursors = this.scene.input.keyboard.createCursorKeys()
-        this.rotateKeyLeft = this.scene.input.keyboard.addKey(
+        this.cursors = this.scene.input.keyboard?.createCursorKeys() as Phaser.Types.Input.Keyboard.CursorKeys
+        this.rotateKeyLeft = this.scene.input.keyboard?.addKey(
             Phaser.Input.Keyboard.KeyCodes.A,
-        )
-        this.rotateKeyRight = this.scene.input.keyboard.addKey(
+        ) as Key
+        this.rotateKeyRight = this.scene.input.keyboard?.addKey(
             Phaser.Input.Keyboard.KeyCodes.D,
-        )
-        this.shootingKey = this.scene.input.keyboard.addKey(
+        ) as Key
+        this.shootingKey = this.scene.input.keyboard?.addKey(
             Phaser.Input.Keyboard.KeyCodes.SPACE,
-        )
+        ) as Key
 
         // physics
         this.scene.physics.world.enable(this)
     }
 
     private handleInput() {
-        // move tank forward
-        // small corrections with (- MATH.PI / 2) to align tank correctly
-        if (this.cursors.up.isDown)
-        {
-            this.scene.physics.velocityFromRotation(
-                this.rotation - Math.PI / 2,
-                this.speed,
-                this.body.velocity,
-            )
-        }
-        else if (this.cursors.down.isDown)
-        {
-            this.scene.physics.velocityFromRotation(
-                this.rotation - Math.PI / 2,
-                -this.speed,
-                this.body.velocity,
-            )
-        }
-        else
-        {
-            this.body.setVelocity(0, 0)
-        }
-
-        // rotate tank
-        if (this.cursors.left.isDown)
-        {
-            this.rotation -= 0.02
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.rotation += 0.02
-        }
-
         // rotate barrel
         if (this.rotateKeyLeft.isDown)
         {
@@ -152,6 +121,49 @@ export class Player extends Phaser.GameObjects.Image
         {
             this.barrel.rotation += 0.05
         }
+
+
+        const targetDirection = Vector2.ZERO.clone()
+        let arrowKeyPressed = false
+        if (this.cursors.down.isDown)
+        {
+            targetDirection.add(new Vector2(0, 1))
+            arrowKeyPressed = true
+        }
+        if (this.cursors.up.isDown)
+        {
+            targetDirection.add(new Vector2(0, -1))
+            arrowKeyPressed = true
+        }
+        if (this.cursors.left.isDown)
+        {
+            targetDirection.add(new Vector2(-1, 0))
+            arrowKeyPressed = true
+        }
+        if (this.cursors.right.isDown)
+        {
+            targetDirection.add(new Vector2(1, 0))
+            arrowKeyPressed = true
+        }
+        if (!arrowKeyPressed)
+        {
+            this.body.setVelocity(0, 0)
+            return
+        }
+
+
+        targetDirection.normalize()
+        const targetRotation = Phaser.Math.Angle.Wrap(targetDirection.angle())
+
+        console.log(targetRotation)
+        this.rotation = Phaser.Math.Angle.RotateTo(this.rotation, targetRotation, 0.1)
+
+        this.scene.physics.velocityFromRotation(
+            this.rotation,
+            this.speed,
+            this.body.velocity,
+        )
+
     }
 
     private handleShooting(): void {
