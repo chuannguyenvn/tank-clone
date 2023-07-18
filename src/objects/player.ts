@@ -121,8 +121,7 @@ export class Player extends Phaser.GameObjects.Image
                 .subtract(new Vector2(this.x, this.y))
                 .angle()
             + Phaser.Math.PI2 / 4
-
-
+        
         const targetDirection = Vector2.ZERO.clone()
         let arrowKeyPressed = false
         if (this.cursors.down.isDown || this.sKey.isDown)
@@ -150,12 +149,10 @@ export class Player extends Phaser.GameObjects.Image
             this.body.setVelocity(0, 0)
             return
         }
-
-
+        
         targetDirection.normalize()
         const targetRotation = Phaser.Math.Angle.Wrap(targetDirection.angle())
 
-        console.log(targetRotation)
         this.rotation = Phaser.Math.Angle.RotateTo(this.rotation, targetRotation, 0.1)
 
         this.scene.physics.velocityFromRotation(
@@ -163,13 +160,12 @@ export class Player extends Phaser.GameObjects.Image
             this.speed,
             this.body.velocity,
         )
-
     }
 
     private handleShooting(): void {
         if (this.scene.input.activePointer.leftButtonDown() && this.scene.time.now > this.lastShoot)
         {
-            this.scene.cameras.main.shake(20, 0.005)
+            this.scene.cameras.main.shake(100, 0.005)
             this.scene.tweens.add({
                 targets: this,
                 props: { alpha: 0.8 },
@@ -196,7 +192,7 @@ export class Player extends Phaser.GameObjects.Image
                     }),
                 )
 
-                this.lastShoot = this.scene.time.now + 80
+                this.lastShoot = this.scene.time.now + 800
             }
         }
     }

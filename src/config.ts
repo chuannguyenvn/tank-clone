@@ -11,6 +11,9 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
     zoom: 0.6,
     type: Phaser.AUTO,
     parent: 'game',
+    scale: {
+        mode: Phaser.Scale.RESIZE,
+    },   
     scene: [BootScene, MenuScene, GameScene],
     input: {
         keyboard: true,
