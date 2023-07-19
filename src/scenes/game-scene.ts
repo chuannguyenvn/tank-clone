@@ -18,9 +18,7 @@ export class GameScene extends Phaser.Scene
     private target: Phaser.Math.Vector2
 
     constructor() {
-        super({
-            key: 'GameScene',
-        })
+        super({ key: 'GameScene' })
     }
 
     create(): void {

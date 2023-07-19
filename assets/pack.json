@@ -81,6 +81,11 @@
         "type": "image",
         "key": "treeLarge",
         "url": "./assets/obstacles/tree-large.png"
+      },
+      {
+        "type": "image",
+        "key": "rounded-square",
+        "url": "./assets/sprites/rounded-square.png"
       }
     ]
   }

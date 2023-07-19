@@ -1,14 +1,14 @@
 import Key = Phaser.Input.Keyboard.Key
+import Button from '../objects/Button'
+import UIScene from './ui-scene'
 
-export class MenuScene extends Phaser.Scene
+export class MenuScene extends UIScene
 {
     private startKey: Phaser.Input.Keyboard.Key
     private bitmapTexts: Phaser.GameObjects.BitmapText[] = []
 
     constructor() {
-        super({
-            key: 'MenuScene',
-        })
+        super('MenuScene')
     }
 
     init(): void {
@@ -19,6 +19,8 @@ export class MenuScene extends Phaser.Scene
     }
 
     create(): void {
+        super.create()
+
         this.bitmapTexts.push(
             this.add.bitmapText(
                 this.sys.canvas.width / 2 - 120,
@@ -38,6 +40,11 @@ export class MenuScene extends Phaser.Scene
                 100,
             ),
         )
+
+        const button = new Button(this, 0, 0)
+        button.setAlign(Phaser.Display.Align.In.BottomRight, -50, -50)
+        // button.setElementOrigins(1, 0)
+        // button.setPivot(Phaser.Display.Align.In.tople)
     }
 
     update(): void {
