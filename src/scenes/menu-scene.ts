@@ -22,58 +22,30 @@ export class MenuScene extends UIScene
     create(): void {
         super.create()
 
-        this.bitmapTexts.push(
-            this.add.bitmapText(
-                this.sys.canvas.width / 2 - 120,
-                this.sys.canvas.height / 2,
-                'font',
-                'PRESS S TO PLAY',
-                30,
-            ),
-        )
+        const button = new ButtonElement(this, 0, 0, 200, 100)
+        button.setAlign(Phaser.Display.Align.In.Center, 0, 50)
+        button.setText("Play")
+        button.text.setTint(0x000000)
+        button.pointerUp.push(() => this.scene.start('GameScene'))
 
-        this.bitmapTexts.push(
-            this.add.bitmapText(
-                this.sys.canvas.width / 2 - 120,
-                this.sys.canvas.height / 2 - 100,
-                'font',
-                'TANK',
-                100,
-            ),
-        )
+        const title = new TextElement(this, 0, 0, 'TANK')
+        title.setAlign(Phaser.Display.Align.In.Center, 0, -50)
 
-        const button = new ButtonElement(this, 0, 0)
-        button.setAlign(Phaser.Display.Align.In.BottomRight, -50, -50)
-        button.setSize(300, 150)
-        // button.setElementOrigins(1, 0)
-        // button.setPivot(Phaser.Display.Align.In.tople)
-
-        new TextElement(this, 0, 0, 'fuck').setAlign(Phaser.Display.Align.In.Center, 0, 0)
-
-
-        // (this.plugins.get('rexkawaseblurpipelineplugin') as any).add(this.cameras.main, {
-        //     blur: 4,
-        //     quality: 3,
-        //     pixelWidth: 1,
-        //     pixelHeight: 1,
-        //     name: 'rexKawaseBlurPostFx',
+        // this.tweens.addCounter({
+        //     from: 0,
+        //     to: 5,
+        //     duration: 2000,
+        //     ease: Phaser.Math.Easing.Quartic.In,
+        //     onUpdate: (tween) => {
+        //         (this.plugins.get('rexkawaseblurpipelineplugin') as any).add(this.cameras.main, {
+        //             blur: tween.getValue(),
+        //             quality: 3,
+        //             pixelWidth: 1,
+        //             pixelHeight: 1,
+        //             name: 'rexKawaseBlurPostFx',
+        //         })
+        //     },
         // })
-
-        this.tweens.addCounter({
-            from: 0,
-            to: 5,
-            duration: 2000,
-            ease: Phaser.Math.Easing.Quartic.In,
-            onUpdate: (tween) => {
-                (this.plugins.get('rexkawaseblurpipelineplugin') as any).add(this.cameras.main, {
-                    blur: tween.getValue(),
-                    quality: 3,
-                    pixelWidth: 1,
-                    pixelHeight: 1,
-                    name: 'rexKawaseBlurPostFx',
-                })
-            },
-        })
     }
 
     update(): void {
