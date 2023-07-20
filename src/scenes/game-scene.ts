@@ -15,6 +15,8 @@ export class GameScene extends Phaser.Scene
     private enemies: Phaser.GameObjects.Group
     private obstacles: Phaser.GameObjects.Group
 
+    private isBlurring = true
+
     constructor() {
         super({ key: 'GameScene' })
     }
@@ -94,6 +96,12 @@ export class GameScene extends Phaser.Scene
 
         this.events.on(Phaser.Scenes.Events.PAUSE, () => this.blur())
         this.events.on(Phaser.Scenes.Events.RESUME, () => this.unblur())
+
+        this.scene.launch('PauseScene')
+
+        this.scale.on(Phaser.Scale.Events.RESIZE, () => {
+            if (this.isBlurring) this.blur()
+        })
     }
 
     update(): void {
@@ -175,6 +183,8 @@ export class GameScene extends Phaser.Scene
     }
 
     public blur(): void {
+        this.isBlurring = true;
+        (this.plugins.get('rexkawaseblurpipelineplugin') as any).remove(this.cameras.main);
         (this.plugins.get('rexkawaseblurpipelineplugin') as any).add(this.cameras.main, {
             blur: 5,
             quality: 10,
@@ -185,6 +195,7 @@ export class GameScene extends Phaser.Scene
     }
 
     public unblur(): void {
+        this.isBlurring = false;
         (this.plugins.get('rexkawaseblurpipelineplugin') as any).remove(this.cameras.main)
     }
 }

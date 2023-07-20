@@ -22,6 +22,8 @@ class ButtonElement extends UIElement
     private pressingDownAnimation: Tween
     private springUpAnimation: Tween
 
+    public playIdleAnimation = true
+
     private initialButtonFaceY: number
 
     constructor(scene: UIScene, x: number, y: number, width: number, height: number) {
@@ -47,7 +49,7 @@ class ButtonElement extends UIElement
 
         this.initialButtonFaceY = this.buttonFace.y
 
-        this.text = this.scene.add.bitmapText(0, this.buttonFace.y, 'font', "")
+        this.text = this.scene.add.bitmapText(0, this.buttonFace.y, 'font', '')
         this.text.setOrigin(0.5)
         this.add(this.text)
 
@@ -72,14 +74,15 @@ class ButtonElement extends UIElement
         this.buttonFace.setTint(0xffffff)
 
         this.stopAllAnimations()
-        this.idleAnimation = this.scene.tweens.add({
-            targets: [this.buttonFace, this.text],
-            y: this.buttonFace.y + this.buttonThickness / 2,
-            yoyo: true,
-            repeat: -1,
-            duration: 800,
-            ease: Phaser.Math.Easing.Quintic.In,
-        })
+        if (this.playIdleAnimation)
+            this.idleAnimation = this.scene.tweens.add({
+                targets: [this.buttonFace, this.text],
+                y: this.buttonFace.y + this.buttonThickness / 2,
+                yoyo: true,
+                repeat: -1,
+                duration: 800,
+                ease: Phaser.Math.Easing.Quintic.In,
+            })
     }
 
     protected pointerDownHandler(): void {
@@ -125,7 +128,7 @@ class ButtonElement extends UIElement
     }
 
     public setText(text: string) {
-  this.text.text = text
+        this.text.text = text
     }
 }
 
