@@ -112,7 +112,7 @@ class ButtonElement extends UIElement
         })
     }
 
-    private stopAllAnimations(): void {
+    public stopAllAnimations(): void {
         this.idleAnimation?.stop()
         this.hoverAnimation?.stop()
         this.pressingDownAnimation?.stop()

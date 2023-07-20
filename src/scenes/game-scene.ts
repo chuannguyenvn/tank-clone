@@ -22,6 +22,7 @@ export class GameScene extends Phaser.Scene
     }
 
     create(): void {
+        console.log('aaaaaaaaaaaaaa')
         // create tilemap from tiled JSON
         this.map = this.make.tilemap({ key: 'levelMap' })
 
@@ -92,6 +93,9 @@ export class GameScene extends Phaser.Scene
         }, this)
 
         this.cameras.main.startFollow(this.player)
+
+        this.events.on(Phaser.Scenes.Events.PAUSE, () => this.blur())
+        this.events.on(Phaser.Scenes.Events.RESUME, () => this.unblur())
     }
 
     update(): void {
@@ -170,5 +174,19 @@ export class GameScene extends Phaser.Scene
     private playerBulletHitEnemy(bullet: Bullet, enemy: Enemy): void {
         bullet.destroy()
         enemy.updateHealth()
+    }
+
+    public blur(): void {
+        (this.plugins.get('rexkawaseblurpipelineplugin') as any).add(this.cameras.main, {
+            blur: 5,
+            quality: 10,
+            pixelWidth: 1,
+            pixelHeight: 1,
+            name: 'rexKawaseBlurPostFx',
+        })
+    }
+
+    public unblur(): void {
+        (this.plugins.get('rexkawaseblurpipelineplugin') as any).remove(this.cameras.main)
     }
 }
