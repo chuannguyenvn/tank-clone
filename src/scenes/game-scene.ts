@@ -15,14 +15,11 @@ export class GameScene extends Phaser.Scene
     private enemies: Phaser.GameObjects.Group
     private obstacles: Phaser.GameObjects.Group
 
-    private target: Phaser.Math.Vector2
-
     constructor() {
         super({ key: 'GameScene' })
     }
 
     create(): void {
-        console.log('aaaaaaaaaaaaaa')
         // create tilemap from tiled JSON
         this.map = this.make.tilemap({ key: 'levelMap' })
 
@@ -93,6 +90,7 @@ export class GameScene extends Phaser.Scene
         }, this)
 
         this.cameras.main.startFollow(this.player)
+        this.cameras.main.setBounds(0, 0, 3200, 2400)
 
         this.events.on(Phaser.Scenes.Events.PAUSE, () => this.blur())
         this.events.on(Phaser.Scenes.Events.RESUME, () => this.unblur())
