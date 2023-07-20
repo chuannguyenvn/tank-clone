@@ -49,6 +49,31 @@ export class MenuScene extends UIScene
         // button.setPivot(Phaser.Display.Align.In.tople)
 
         new TextElement(this, 0, 0, 'fuck').setAlign(Phaser.Display.Align.In.Center, 0, 0)
+
+
+        // (this.plugins.get('rexkawaseblurpipelineplugin') as any).add(this.cameras.main, {
+        //     blur: 4,
+        //     quality: 3,
+        //     pixelWidth: 1,
+        //     pixelHeight: 1,
+        //     name: 'rexKawaseBlurPostFx',
+        // })
+
+        this.tweens.addCounter({
+            from: 0,
+            to: 5,
+            duration: 2000,
+            ease: Phaser.Math.Easing.Quartic.In,
+            onUpdate: (tween) => {
+                (this.plugins.get('rexkawaseblurpipelineplugin') as any).add(this.cameras.main, {
+                    blur: tween.getValue(),
+                    quality: 3,
+                    pixelWidth: 1,
+                    pixelHeight: 1,
+                    name: 'rexKawaseBlurPostFx',
+                })
+            },
+        })
     }
 
     update(): void {

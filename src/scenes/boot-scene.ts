@@ -42,8 +42,16 @@ export class BootScene extends Phaser.Scene
 
         // load our package
         this.load.pack('preload', './assets/pack.json', 'preload')
+
+        this.load.plugin('rexkawaseblurpipelineplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexkawaseblurpipelineplugin.min.js', true);
+
+       
     }
 
+    create() : void{
+
+    }
+    
     update(): void {
         this.scene.start('MenuScene')
     }
