@@ -1,6 +1,7 @@
 import Key = Phaser.Input.Keyboard.Key
-import Button from '../objects/Button'
+import ButtonElement from '../objects/ButtonElement'
 import UIScene from './ui-scene'
+import TextElement from '../objects/TextElement'
 
 export class MenuScene extends UIScene
 {
@@ -41,10 +42,13 @@ export class MenuScene extends UIScene
             ),
         )
 
-        const button = new Button(this, 0, 0)
+        const button = new ButtonElement(this, 0, 0)
         button.setAlign(Phaser.Display.Align.In.BottomRight, -50, -50)
+        button.setSize(300, 150)
         // button.setElementOrigins(1, 0)
         // button.setPivot(Phaser.Display.Align.In.tople)
+
+        new TextElement(this, 0, 0, 'fuck').setAlign(Phaser.Display.Align.In.Center, 0, 0)
     }
 
     update(): void {

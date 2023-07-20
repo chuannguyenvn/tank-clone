@@ -2,7 +2,7 @@
 import UIElement from './UIElement'
 import Color = Phaser.Display.Color
 
-class Button extends UIElement
+class ButtonElement extends UIElement
 {
     private buttonFace: Phaser.GameObjects.NineSlice
     private buttonBody: Phaser.GameObjects.NineSlice
@@ -11,17 +11,19 @@ class Button extends UIElement
     public pointerUnhovered: (() => void) [] = []
     public pointerDown: (() => void)[] = []
     public pointerUp: (() => void)[] = []
+    
+    public buttonThickness = 16
 
     constructor(scene: UIScene, x: number, y: number) {
         super(scene, x, y)
 
         this.buttonFace = scene.add.nineslice(0, 0, 'rounded-square', undefined, 512, 512, 64, 64, 64, 64)
-        this.buttonBody = scene.add.nineslice(0, 32, 'rounded-square', undefined, 512, 512, 64, 64, 64, 64).setDepth(-1)
+        this.buttonBody = scene.add.nineslice(0, this.buttonThickness, 'rounded-square', undefined, 512, 512, 64, 64, 64, 64).setDepth(-1)
 
         this.add(this.buttonBody)
         this.add(this.buttonFace)
         
-        this.setSize(this.buttonFace.width, this.buttonFace.height + 32)
+        this.setSize(this.buttonFace.width, this.buttonFace.height + this.buttonThickness)
 
         this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => this.pointerHoveredHandler())
         this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => this.pointerUnhoveredHandler())
@@ -51,6 +53,12 @@ class Button extends UIElement
         this.buttonFace.setTint(tint)
         this.buttonBody.setTint(Color.IntegerToColor(tint).darken(50).color)
     }
+    
+    public setSize(width: number, height: number): this {
+        this.buttonFace.setSize(width, height - this.buttonThickness)
+        this.buttonBody.setSize(width, height)
+        return super.setSize(width, height)
+    }
 }
 
-export default Button
+export default ButtonElement
