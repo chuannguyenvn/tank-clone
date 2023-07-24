@@ -57,6 +57,8 @@ export class Player extends Phaser.GameObjects.Image
     }
 
     public updateHealth(): void {
+        (this.scene as GameScene).hitSound.play()
+        
         this.health -= 0.1
 
         this.redrawLifebar()
@@ -65,7 +67,7 @@ export class Player extends Phaser.GameObjects.Image
         {
             this.health = 0
             this.active = false;
-            (this.scene.scene.get('GameScene') as GameScene).endGame()
+            (this.scene as GameScene).endGame()
         }
     }
 
@@ -164,6 +166,8 @@ export class Player extends Phaser.GameObjects.Image
     private handleShooting(): void {
         if (this.scene.input.activePointer.leftButtonDown() && this.scene.time.now > this.lastShoot)
         {
+            (this.scene as GameScene).shootSound.play()
+            
             this.scene.cameras.main.shake(100, 0.005)
             this.scene.tweens.add({
                 targets: this,

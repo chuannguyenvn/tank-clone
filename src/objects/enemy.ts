@@ -13,7 +13,6 @@ export class Enemy extends Phaser.GameObjects.Image
 
     // children
     private barrel: Phaser.GameObjects.Image
-    private lifeBar: Phaser.GameObjects.Graphics
 
     // game objects
     private bullets: Phaser.GameObjects.Group
@@ -38,8 +37,7 @@ export class Enemy extends Phaser.GameObjects.Image
         {
             this.barrel.x = this.x
             this.barrel.y = this.y
-            this.lifeBar.x = this.x
-            this.lifeBar.y = this.y
+
             this.handleShooting()
         }
         else
@@ -48,17 +46,12 @@ export class Enemy extends Phaser.GameObjects.Image
 
             this.destroy()
             this.barrel.destroy()
-            this.lifeBar.destroy()
         }
     }
 
     public updateHealth(): void {
-        // if (this.health > 0)
-        // {
-        //     this.health -= 0.05
-        //     this.redrawLifebar()
-        // }
-        // else
+        (this.scene as GameScene).hitSound.play()
+
         {
             this.health = 0
             this.active = false
@@ -77,9 +70,6 @@ export class Enemy extends Phaser.GameObjects.Image
         this.barrel = this.scene.add.image(0, 0, 'barrelRed')
         this.barrel.setOrigin(0.5, 1)
         this.barrel.setDepth(1)
-
-        this.lifeBar = this.scene.add.graphics()
-        this.redrawLifebar()
 
         // game objects
         this.bullets = this.scene.add.group({
@@ -126,18 +116,5 @@ export class Enemy extends Phaser.GameObjects.Image
             }
         }
     }
-
-    private redrawLifebar(): void {
-        this.lifeBar.clear()
-        this.lifeBar.fillStyle(0xe66a28, 1)
-        this.lifeBar.fillRect(
-            -this.width / 2,
-            this.height / 2,
-            this.width * this.health,
-            15,
-        )
-        this.lifeBar.lineStyle(2, 0xffffff)
-        this.lifeBar.strokeRect(-this.width / 2, this.height / 2, this.width, 15)
-        this.lifeBar.setDepth(1)
-    }
+    
 }

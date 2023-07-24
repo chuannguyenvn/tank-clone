@@ -4,6 +4,7 @@ import { Obstacle } from '../objects/obstacles/obstacle'
 import { Bullet } from '../objects/bullet'
 import Tileset = Phaser.Tilemaps.Tileset
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer
+import WebAudioSound = Phaser.Sound.WebAudioSound
 
 export class GameScene extends Phaser.Scene
 {
@@ -20,7 +21,10 @@ export class GameScene extends Phaser.Scene
     public tanksKilled: number
 
     public gameEnded: boolean
-    
+
+    public shootSound: WebAudioSound
+    public hitSound: WebAudioSound
+
     constructor() {
         super({ key: 'GameScene' })
     }
@@ -109,6 +113,9 @@ export class GameScene extends Phaser.Scene
 
         this.tanksKilled = 0
         this.gameEnded = false
+
+        this.shootSound = this.sound.add('shoot') as WebAudioSound
+        this.hitSound = this.sound.add('hit') as WebAudioSound
     }
 
     update(): void {
@@ -185,6 +192,7 @@ export class GameScene extends Phaser.Scene
     }
 
     private playerBulletHitEnemy(bullet: Bullet, enemy: Enemy): void {
+        this.hitSound.play()
         bullet.destroy()
         enemy.updateHealth()
     }

@@ -30,19 +30,19 @@ export class ScoreScene extends UIScene
         super.create()
 
         this.tanksKilledDescriptionText = new TextElement(this, 0, 0, 'Tanks destroyed:')
-        this.tanksKilledDescriptionText.setAlign(Phaser.Display.Align.In.Center, -400, -150)
+        this.tanksKilledDescriptionText.setAlign(Phaser.Display.Align.In.Center, -400, -250)
         this.tanksKilledDescriptionText.setOrigin(0, 0.5)
 
         this.timeLeftDescriptionText = new TextElement(this, 0, 0, 'Time left:')
-        this.timeLeftDescriptionText.setAlign(Phaser.Display.Align.In.Center, -400, -50)
+        this.timeLeftDescriptionText.setAlign(Phaser.Display.Align.In.Center, -400, -150)
         this.timeLeftDescriptionText.setOrigin(0, 0.5)
 
         this.scoreDescriptionText = new TextElement(this, 0, 0, 'Total score:')
-        this.scoreDescriptionText.setAlign(Phaser.Display.Align.In.Center, -400, 50)
+        this.scoreDescriptionText.setAlign(Phaser.Display.Align.In.Center, -400, -50)
         this.scoreDescriptionText.setOrigin(0, 0.5)
 
         this.highScoreDescriptionText = new TextElement(this, 0, 0, 'High score:')
-        this.highScoreDescriptionText.setAlign(Phaser.Display.Align.In.Center, -400, 150)
+        this.highScoreDescriptionText.setAlign(Phaser.Display.Align.In.Center, -400, 50)
         this.highScoreDescriptionText.setOrigin(0, 0.5)
 
         const pauseScene = this.scene.get('PauseScene') as PauseScene
@@ -58,25 +58,25 @@ export class ScoreScene extends UIScene
         }
 
         this.tanksKilledNumberText = new TextElement(this, 0, 0, tanksKilled.toString())
-        this.tanksKilledNumberText.setAlign(Phaser.Display.Align.In.Center, 400, -150)
+        this.tanksKilledNumberText.setAlign(Phaser.Display.Align.In.Center, 400, -250)
         this.tanksKilledNumberText.setOrigin(1, 0.5)
 
         this.timeLeftNumberText = new TextElement(this, 0, 0, timeLeft.toString())
-        this.timeLeftNumberText.setAlign(Phaser.Display.Align.In.Center, 400, -50)
+        this.timeLeftNumberText.setAlign(Phaser.Display.Align.In.Center, 400, -150)
         this.timeLeftNumberText.setOrigin(1, 0.5)
 
         this.scoreNumberText = new TextElement(this, 0, 0, score.toString())
-        this.scoreNumberText.setAlign(Phaser.Display.Align.In.Center, 400, 50)
+        this.scoreNumberText.setAlign(Phaser.Display.Align.In.Center, 400, -50)
         this.scoreNumberText.setOrigin(1, 0.5)
 
         this.highScoreNumberText = new TextElement(this, 0, 0, localStorage.getItem('highscore') as string)
-        this.highScoreNumberText.setAlign(Phaser.Display.Align.In.Center, 400, 150)
+        this.highScoreNumberText.setAlign(Phaser.Display.Align.In.Center, 400, 50)
         this.highScoreNumberText.setOrigin(1, 0.5);
 
         (this.scene.get('GameScene') as GameScene).blur()
 
         this.continueButton = new ButtonElement(this, 0, 0, 375, 100)
-        this.continueButton.setAlign(Phaser.Display.Align.In.Center, 0, 300)
+        this.continueButton.setAlign(Phaser.Display.Align.In.Center, 0, 200)
         this.continueButton.text.setTint(0x000000)
         this.continueButton.setText('Continue')
         this.continueButton.pointerUp.push(() => this.scene.start('MenuScene'))

@@ -11,9 +11,10 @@ export class PauseScene extends UIScene
     private muteButton: ButtonElement
 
     public timerText: TextElement
-    public timeLeft :number
+    public timeLeft: number
 
     public isPaused = true
+    private muted: boolean
 
     constructor() {
         super('PauseScene')
@@ -21,6 +22,8 @@ export class PauseScene extends UIScene
 
     create(): void {
         super.create()
+
+        this.muted = false
 
         this.pauseButton = new ButtonElement(this, 0, 0, 128, 64)
         this.pauseButton.setAlign(Phaser.Display.Align.In.TopRight, -10, -10)
@@ -65,6 +68,12 @@ export class PauseScene extends UIScene
         this.muteButton.text.setFontSize(30)
         this.muteButton.playIdleAnimation = false
         this.muteButton.stopAllAnimations()
+        this.muteButton.pointerUp.push(() => {
+            this.muted = !this.muted
+            const gameScene = this.scene.get('GameScene')
+            gameScene.sound.setVolume(this.muted ? 0 : 1)
+            this.muteButton.text.text = this.muted ? "Unmute" : "Mute"
+        })
 
         this.togglePauseMenu(false)
         this.pauseButton.setVisible(false)
