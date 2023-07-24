@@ -29,7 +29,7 @@ class ButtonElement extends UIElement
     constructor(scene: UIScene, x: number, y: number, width: number, height: number) {
         super(scene, x, y)
 
-        this.buttonFace = scene.add.nineslice(0, 0 - this.buttonThickness / 2, 'rounded-square', undefined, 512, 512, 16, 16, 16, 16)
+        this.buttonFace = scene.add.nineslice(0, -this.buttonThickness / 2, 'rounded-square', undefined, 512, 512, 16, 16, 16, 16)
         this.buttonBody = scene.add.nineslice(0, 0, 'rounded-square', undefined, 512, 512, 16, 16, 16, 16).setDepth(-1)
 
         this.add(this.buttonBody)
@@ -88,14 +88,12 @@ class ButtonElement extends UIElement
     protected pointerDownHandler(): void {
         this.pointerDown.forEach(event => event())
         this.buttonFace.setTint(0x888888)
-        // this.buttonFace.y += this.buttonThickness
-        // if (this.text) this.text.y += this.buttonThickness
 
         this.stopAllAnimations()
         this.pressingDownAnimation = this.scene.tweens.add({
             targets: [this.buttonFace, this.text],
             y: this.buttonFace.y + this.buttonThickness / 2,
-            duration: 100,
+            duration: 50,
             ease: Phaser.Math.Easing.Expo.In,
         })
     }
@@ -103,14 +101,12 @@ class ButtonElement extends UIElement
     protected pointerUpHandler(): void {
         this.pointerUp.forEach(event => event())
         this.buttonFace.setTint(0xaaaaaa)
-        // this.buttonFace.y -= this.buttonThickness
-        // if (this.text) this.text.y -= this.buttonThickness
 
         this.stopAllAnimations()
         this.springUpAnimation = this.scene.tweens.add({
             targets: [this.buttonFace, this.text],
             y: this.initialButtonFaceY,
-            duration: 100,
+            duration: 50,
             ease: Phaser.Math.Easing.Expo.In,
         })
     }
@@ -129,6 +125,11 @@ class ButtonElement extends UIElement
 
     public setText(text: string) {
         this.text.text = text
+    }
+    
+    public reset(): void {
+        this.buttonFace.y = -this.buttonThickness / 2
+        this.text.y = -this.buttonThickness / 2
     }
 }
 

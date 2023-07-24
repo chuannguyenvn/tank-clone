@@ -1,6 +1,7 @@
 import ButtonElement from '../objects/ButtonElement'
 import UIScene from './ui-scene'
 import TextElement from '../objects/TextElement'
+import { PauseScene } from './pause-scene'
 
 export class MenuScene extends UIScene
 {
@@ -18,7 +19,8 @@ export class MenuScene extends UIScene
         button.setText('Play')
         button.text.setTint(0x000000)
         button.pointerUp.push(() => {
-            this.scene.resume('GameScene')
+            this.scene.resume('GameScene');
+            (this.scene.get('PauseScene') as PauseScene).pauseButton.setVisible(true)
             this.scene.stop()
         })
 
