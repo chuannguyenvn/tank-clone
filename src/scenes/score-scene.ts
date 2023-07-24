@@ -2,6 +2,7 @@
 import TextElement from '../objects/TextElement'
 import { PauseScene } from './pause-scene'
 import { GameScene } from './game-scene'
+import ButtonElement from '../objects/ButtonElement'
 
 
 export class ScoreScene extends UIScene
@@ -18,6 +19,8 @@ export class ScoreScene extends UIScene
     private timeLeftNumberText: TextElement
     private scoreNumberText: TextElement
     private highScoreNumberText: TextElement
+
+    private continueButton: ButtonElement
 
     constructor() {
         super('ScoreScene')
@@ -68,6 +71,14 @@ export class ScoreScene extends UIScene
 
         this.highScoreNumberText = new TextElement(this, 0, 0, localStorage.getItem('highscore') as string)
         this.highScoreNumberText.setAlign(Phaser.Display.Align.In.Center, 400, 150)
-        this.highScoreNumberText.setOrigin(1, 0.5)
+        this.highScoreNumberText.setOrigin(1, 0.5);
+
+        (this.scene.get('GameScene') as GameScene).blur()
+
+        this.continueButton = new ButtonElement(this, 0, 0, 375, 100)
+        this.continueButton.setAlign(Phaser.Display.Align.In.Center, 0, 300)
+        this.continueButton.text.setTint(0x000000)
+        this.continueButton.setText('Continue')
+        this.continueButton.pointerUp.push(() => this.scene.start('MenuScene'))
     }
 }

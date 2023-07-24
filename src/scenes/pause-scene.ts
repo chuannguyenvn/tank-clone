@@ -11,7 +11,7 @@ export class PauseScene extends UIScene
     private muteButton: ButtonElement
 
     public timerText: TextElement
-    public timeLeft = 60
+    public timeLeft :number
 
     public isPaused = true
 

@@ -19,6 +19,8 @@ export class GameScene extends Phaser.Scene
 
     public tanksKilled: number
 
+    public gameEnded: boolean
+    
     constructor() {
         super({ key: 'GameScene' })
     }
@@ -106,6 +108,7 @@ export class GameScene extends Phaser.Scene
         })
 
         this.tanksKilled = 0
+        this.gameEnded = false
     }
 
     update(): void {
@@ -211,5 +214,7 @@ export class GameScene extends Phaser.Scene
     public endGame(): void {
         this.scene.stop('PauseScene')
         this.scene.launch('ScoreScene')
+        this.gameEnded = true
+        this.player.active = false
     }
 }

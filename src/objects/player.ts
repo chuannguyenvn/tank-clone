@@ -1,5 +1,6 @@
 import { Bullet } from './bullet'
 import { IImageConstructor } from '../interfaces/image.interface'
+import { GameScene } from '../scenes/game-scene'
 import Key = Phaser.Input.Keyboard.Key
 import Vector2 = Phaser.Math.Vector2
 
@@ -25,7 +26,6 @@ export class Player extends Phaser.GameObjects.Image
     private dKey: Phaser.Input.Keyboard.Key
     private wKey: Phaser.Input.Keyboard.Key
     private sKey: Phaser.Input.Keyboard.Key
-    private shootingKey: Phaser.Input.Keyboard.Key
 
     constructor(aParams: IImageConstructor) {
         super(aParams.scene, aParams.x, aParams.y, aParams.texture, aParams.frame)
@@ -57,16 +57,15 @@ export class Player extends Phaser.GameObjects.Image
     }
 
     public updateHealth(): void {
-        if (this.health > 0)
-        {
-            this.health -= 0.05
-            this.redrawLifebar()
-        }
-        else
+        this.health -= 0.1
+
+        this.redrawLifebar()
+
+        if (this.health < 0)
         {
             this.health = 0
-            this.active = false
-            this.scene.scene.start('MenuScene')
+            this.active = false;
+            (this.scene.scene.get('GameScene') as GameScene).endGame()
         }
     }
 
@@ -74,7 +73,7 @@ export class Player extends Phaser.GameObjects.Image
         // variables
         this.health = 1
         this.lastShoot = 0
-        this.speed = 100
+        this.speed = 200
 
         // image
         this.setOrigin(0.5, 0.5)
@@ -121,7 +120,7 @@ export class Player extends Phaser.GameObjects.Image
                 .subtract(new Vector2(this.x, this.y))
                 .angle()
             + Phaser.Math.PI2 / 4
-        
+
         const targetDirection = Vector2.ZERO.clone()
         let arrowKeyPressed = false
         if (this.cursors.down.isDown || this.sKey.isDown)
@@ -149,7 +148,7 @@ export class Player extends Phaser.GameObjects.Image
             this.body.setVelocity(0, 0)
             return
         }
-        
+
         targetDirection.normalize()
         const targetRotation = Phaser.Math.Angle.Wrap(targetDirection.angle())
 
