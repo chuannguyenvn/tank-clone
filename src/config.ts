@@ -2,6 +2,7 @@ import { BootScene } from './scenes/boot-scene'
 import { GameScene } from './scenes/game-scene'
 import { MenuScene } from './scenes/menu-scene'
 import { PauseScene } from './scenes/pause-scene'
+import { ScoreScene } from './scenes/score-scene'
 
 export const GameConfig: Phaser.Types.Core.GameConfig = {
     title: 'Tank',
@@ -15,7 +16,7 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
     scale: {
         mode: Phaser.Scale.RESIZE,
     },
-    scene: [BootScene, MenuScene, GameScene, PauseScene],
+    scene: [BootScene, MenuScene, GameScene, PauseScene, ScoreScene],
     input: {
         keyboard: true,
     },

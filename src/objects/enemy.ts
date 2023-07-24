@@ -1,5 +1,6 @@
 import { Bullet } from './bullet'
 import { IImageConstructor } from '../interfaces/image.interface'
+import { GameScene } from '../scenes/game-scene'
 
 export class Enemy extends Phaser.GameObjects.Image
 {
@@ -43,6 +44,8 @@ export class Enemy extends Phaser.GameObjects.Image
         }
         else
         {
+            (this.scene.scene.get('GameScene') as GameScene).tankKilled()
+
             this.destroy()
             this.barrel.destroy()
             this.lifeBar.destroy()

@@ -1,6 +1,7 @@
 ﻿import UIScene from './ui-scene'
 import ButtonElement from '../objects/ButtonElement'
 import TextElement from '../objects/TextElement'
+import { GameScene } from './game-scene'
 
 export class PauseScene extends UIScene
 {
@@ -10,7 +11,7 @@ export class PauseScene extends UIScene
     private muteButton: ButtonElement
 
     public timerText: TextElement
-    private timeLeft = 60
+    public timeLeft = 60
 
     public isPaused = true
 
@@ -71,7 +72,7 @@ export class PauseScene extends UIScene
         this.timerText = new TextElement(this, 0, 0, 'Time left: 60')
         this.timerText.setAlign(Phaser.Display.Align.In.TopLeft, -10, -10)
         this.timerText.setVisible(false)
-        
+
         this.isPaused = true
         this.timeLeft = 60
     }
@@ -81,6 +82,12 @@ export class PauseScene extends UIScene
         if (this.isPaused) return
         this.timeLeft -= delta / 1000
         this.timerText.setText('Time left: ' + this.timeLeft.toFixed(0))
+
+        if (this.timeLeft < 0)
+        {
+            this.isPaused = true;
+            (this.scene.get('GameScene') as GameScene).endGame()
+        }
     }
 
     private togglePauseMenu(isOn: boolean) {
@@ -93,7 +100,7 @@ export class PauseScene extends UIScene
         this.continueButton.setVisible(isOn)
         this.newButton.setVisible(isOn)
         this.muteButton.setVisible(isOn)
-        
+
         this.isPaused = isOn
     }
 }

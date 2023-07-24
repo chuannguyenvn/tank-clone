@@ -17,6 +17,8 @@ export class GameScene extends Phaser.Scene
 
     private isBlurring = true
 
+    public tanksKilled: number
+
     constructor() {
         super({ key: 'GameScene' })
     }
@@ -102,6 +104,8 @@ export class GameScene extends Phaser.Scene
         this.scale.on(Phaser.Scale.Events.RESIZE, () => {
             if (this.isBlurring) this.blur()
         })
+
+        this.tanksKilled = 0
     }
 
     update(): void {
@@ -197,5 +201,15 @@ export class GameScene extends Phaser.Scene
     public unblur(): void {
         this.isBlurring = false;
         (this.plugins.get('rexkawaseblurpipelineplugin') as any).remove(this.cameras.main)
+    }
+
+    public tankKilled(): void {
+        this.tanksKilled++
+        if (this.tanksKilled === 7) this.endGame()
+    }
+
+    public endGame(): void {
+        this.scene.stop('PauseScene')
+        this.scene.launch('ScoreScene')
     }
 }
