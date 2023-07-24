@@ -1,15 +1,16 @@
 ﻿import UIElement from './UIElement'
 import UIScene from '../scenes/ui-scene'
 
-class TextElement extends UIElement
+class BitmapTextElement extends UIElement
 {
-    protected text: Phaser.GameObjects.Text
+    protected text: Phaser.GameObjects.BitmapText
 
     constructor(scene: UIScene, x: number, y: number, textContent: string) {
         super(scene, x, y)
 
-        this.text = scene.add.text(0, 0, textContent)
+        this.text = scene.add.bitmapText(0, 0, 'font', textContent)
         this.add(this.text)
+        this.text.setOrigin(0.5)
     }
 
     public setText(text: string): void {
@@ -17,4 +18,4 @@ class TextElement extends UIElement
     }
 }
 
-export default TextElement
+export default BitmapTextElement
