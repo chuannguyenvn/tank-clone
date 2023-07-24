@@ -16,7 +16,7 @@ export class GameScene extends Phaser.Scene
     private enemies: Phaser.GameObjects.Group
     private obstacles: Phaser.GameObjects.Group
 
-    private isBlurring = true
+    private isBlurring: boolean
 
     public tanksKilled: number
 
@@ -108,7 +108,7 @@ export class GameScene extends Phaser.Scene
         this.scene.launch('PauseScene')
 
         this.scale.on(Phaser.Scale.Events.RESIZE, () => {
-            if (this.isBlurring) this.blur()
+            if (this.isBlurring) this.blurImmediate()
         })
 
         this.tanksKilled = 0
@@ -116,6 +116,9 @@ export class GameScene extends Phaser.Scene
 
         this.shootSound = this.sound.add('shoot') as WebAudioSound
         this.hitSound = this.sound.add('hit') as WebAudioSound
+
+        this.isBlurring = false
+        this.blurImmediate()
     }
 
     update(): void {
@@ -198,7 +201,30 @@ export class GameScene extends Phaser.Scene
     }
 
     public blur(): void {
+        if (this.isBlurring) return
+        this.isBlurring = true
+
+        this.scene.get('PauseScene').tweens.addCounter({
+            from: 0,
+            to: 5,
+            duration: 250,
+            onUpdate: (tween) => {
+                (this.plugins.get('rexkawaseblurpipelineplugin') as any).remove(this.cameras.main);
+                (this.plugins.get('rexkawaseblurpipelineplugin') as any).add(this.cameras.main, {
+                    blur: tween.getValue(),
+                    quality: 10,
+                    pixelWidth: 1,
+                    pixelHeight: 1,
+                    name: 'rexKawaseBlurPostFx',
+                })
+            },
+        })
+    }
+
+    public blurImmediate(): void {
+        if (this.isBlurring) return
         this.isBlurring = true;
+
         (this.plugins.get('rexkawaseblurpipelineplugin') as any).remove(this.cameras.main);
         (this.plugins.get('rexkawaseblurpipelineplugin') as any).add(this.cameras.main, {
             blur: 5,
@@ -210,8 +236,27 @@ export class GameScene extends Phaser.Scene
     }
 
     public unblur(): void {
-        this.isBlurring = false;
-        (this.plugins.get('rexkawaseblurpipelineplugin') as any).remove(this.cameras.main)
+        this.isBlurring = false
+
+        this.scene.get('PauseScene').tweens.addCounter({
+            from: 5,
+            to: 0,
+            duration: 250,
+            onUpdate: (tween) => {
+                (this.plugins.get('rexkawaseblurpipelineplugin') as any).remove(this.cameras.main);
+                (this.plugins.get('rexkawaseblurpipelineplugin') as any).add(this.cameras.main, {
+                    blur: tween.getValue(),
+                    quality: 10,
+                    pixelWidth: 1,
+                    pixelHeight: 1,
+                    name: 'rexKawaseBlurPostFx',
+                })
+            },
+            onComplete: () => {
+                (this.plugins.get('rexkawaseblurpipelineplugin') as any).remove(this.cameras.main)
+
+            },
+        })
     }
 
     public tankKilled(): void {
